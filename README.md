@@ -141,8 +141,3 @@ PRs are welcome! Please open an issue first to discuss any major changes.
 3. Push to the branch (`git push origin feature/foo`)
 4. Submit a pull request
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License © RenArt Global. 
