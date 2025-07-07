@@ -26,6 +26,7 @@ A responsive e-commerce style web application showcasing RenArt's jewellery cata
      Price = (popularityScore + 1) × weight × goldPricePerGram
      ```
    * Gold price value highlighted in gold colour `#E6CA97`
+   * Graceful fallback: if the API call fails (e.g. on rate-limit or network error) the banner shows **Error loading price** and product prices fall back to their static base values labelled “(Using base price)”.
 
 5. **Sorting & Filtering**
    * Filter by price / popularity ranges
