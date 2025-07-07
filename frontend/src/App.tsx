@@ -61,11 +61,11 @@ const CarouselContainer = styled.div`
   padding: 0 40px;
 
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 0 60px;
   }
 
   @media (max-width: 480px) {
-    padding: 0 10px;
+    padding: 0 50px;
   }
 `;
 
@@ -82,6 +82,7 @@ const ProductRow = styled.div`
     padding: 16px 0;
     scroll-snap-type: x mandatory;
     scroll-padding: 0 16px;
+    justify-content: flex-start;
   }
 
   @media (max-width: 480px) {
@@ -89,6 +90,7 @@ const ProductRow = styled.div`
     padding: 12px 0;
     scroll-snap-type: x mandatory;
     scroll-padding: 0 12px;
+    justify-content: flex-start;
   }
   
   /* Hide scrollbar by default */
@@ -314,8 +316,8 @@ function App() {
     if (productRowRef.current) {
       // Get responsive product width based on screen size
       const getProductWidth = () => {
-        if (window.innerWidth <= 480) return 220;
-        if (window.innerWidth <= 768) return 250;
+        if (window.innerWidth <= 480) return 200;
+        if (window.innerWidth <= 768) return 240;
         return 280;
       };
       

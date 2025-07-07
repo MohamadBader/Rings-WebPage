@@ -19,14 +19,16 @@ const Card = styled.div`
   cursor: pointer;
 
   @media (max-width: 768px) {
-    width: 250px;
-    min-width: 200px;
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
     scroll-snap-align: center;
   }
 
   @media (max-width: 480px) {
-    width: 220px;
-    min-width: 180px;
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
     scroll-snap-align: center;
   }
 
