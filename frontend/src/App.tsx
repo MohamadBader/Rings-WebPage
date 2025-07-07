@@ -218,7 +218,8 @@ function App() {
       if (filters.minPopularity !== null) params.append('minPopularity', filters.minPopularity.toString());
       if (filters.maxPopularity !== null) params.append('maxPopularity', filters.maxPopularity.toString());
 
-      const response = await fetch(`http://localhost:3001/api/products?${params}`);
+      const apiBase = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
+      const response = await fetch(`${apiBase}/api/products?${params.toString()}`);
       const data = await response.json();
       setProducts(sortProducts(data));
     } catch (error) {
