@@ -211,17 +211,35 @@ function App() {
   const fetchProducts = async (filters: FilterValues) => {
     try {
       const params = new URLSearchParams();
-      if (filters.minPrice !== null) params.append('minPrice', filters.minPrice.toString());
-      if (filters.maxPrice !== null) params.append('maxPrice', filters.maxPrice.toString());
-      if (filters.minPopularity !== null) params.append('minPopularity', filters.minPopularity.toString());
-      if (filters.maxPopularity !== null) params.append('maxPopularity', filters.maxPopularity.toString());
+      // Send only popularity filters to backend; price filtering will be done client-side with live gold price
+      if (filters.minPopularity !== null)
+        params.append("minPopularity", filters.minPopularity.toString());
+      if (filters.maxPopularity !== null)
+        params.append("maxPopularity", filters.maxPopularity.toString());
 
-      const apiBase = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
+      const apiBase =
+        process.env.NODE_ENV === "production" ? "" : "http://localhost:3001";
       const response = await fetch(`${apiBase}/api/products?${params.toString()}`);
-      const data = await response.json();
-      setProducts(sortProducts(data));
+      const data: Product[] = await response.json();
+
+      // Re-calculate price on the client using the (possibly live) gold price
+      const pricePerGram = goldPrice?.pricePerGram24k ?? 20; // fallback to 20 if not yet loaded
+      let enhanced = data.map((p) => ({
+        ...p,
+        price: (p.popularityScore + 1) * p.weight * pricePerGram,
+      }));
+
+      // Apply min/max price filters locally
+      if (filters.minPrice !== null) {
+        enhanced = enhanced.filter((p) => p.price >= filters.minPrice!);
+      }
+      if (filters.maxPrice !== null) {
+        enhanced = enhanced.filter((p) => p.price <= filters.maxPrice!);
+      }
+
+      setProducts(sortProducts(enhanced));
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
   };
 
