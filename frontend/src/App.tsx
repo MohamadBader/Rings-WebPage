@@ -154,23 +154,35 @@ function App() {
   const [goldPriceLoading, setGoldPriceLoading] = useState(true);
 
   const fetchGoldPrice = async () => {
-    setGoldPriceLoading(true);
     try {
-      const apiBase = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
-      const res = await fetch(`${apiBase}/api/gold-price`);
-      if (!res.ok) throw new Error('Failed to fetch gold price');
-      const data = await res.json();
+      const apiKey = process.env.REACT_APP_METAL_PRICE_API_KEY;
+      if (!apiKey) {
+        throw new Error('Missing METAL_PRICE_API_KEY');
+      }
+      const response = await fetch(`https://api.metalpriceapi.com/v1/latest?api_key=${apiKey}&base=USD&currencies=XAU`);
 
-      if (!data.success) throw new Error('API responded with error');
+      if (!response.ok) {
+        throw new Error('Failed to fetch gold price');
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error('API returned unsuccessful response');
+      }
 
       const gramsPerTroyOunce = 31.1035;
       const usdPerOunce = 1 / data.rates.XAU;
       const usdPerGram = usdPerOunce / gramsPerTroyOunce;
 
-      setGoldPrice({ pricePerGram24k: usdPerGram, timestamp: data.timestamp });
+      setGoldPrice({
+        pricePerGram24k: usdPerGram,
+        timestamp: data.timestamp
+      });
       setGoldPriceError(null);
     } catch (err) {
-      setGoldPriceError(err instanceof Error ? err.message : 'Unknown error');
+      setGoldPriceError(err instanceof Error ? err.message : 'Failed to fetch gold price');
+      console.error('Error fetching gold price:', err);
     } finally {
       setGoldPriceLoading(false);
     }
