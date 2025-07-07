@@ -2,9 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -115,24 +112,6 @@ app.get('/api/products', (req, res) => {
     res.json(productsWithPrices);
   } catch (error) {
     console.error('Error fetching products:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Gold price proxy for development
-app.get('/api/gold-price', async (_req, res) => {
-  try {
-    const apiKey = process.env.METAL_PRICE_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: 'API key not configured' });
-    }
-
-    const url = `https://api.metalpriceapi.com/v1/latest?api_key=${apiKey}&base=USD&currencies=XAU`;
-    const apiRes = await fetch(url);
-    const data = await apiRes.json();
-    res.json(data);
-  } catch (error) {
-    console.error('Error fetching gold price:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

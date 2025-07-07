@@ -149,17 +149,19 @@ function App() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   
-  const [goldPrice, setGoldPrice] = useState<GoldPriceData | null>(null);
+  // Commented out gold price fetching for development
+  // Will be uncommented when ready for production
+  const [goldPrice, setGoldPrice] = useState<GoldPriceData | null>({
+    pricePerGram24k: 107.28,  // Using static value for development
+    timestamp: Date.now()
+  });
   const [goldPriceError, setGoldPriceError] = useState<string | null>(null);
-  const [goldPriceLoading, setGoldPriceLoading] = useState(true);
+  const [goldPriceLoading, setGoldPriceLoading] = useState(false);
 
+  /* Commenting out gold price fetching to avoid API calls during development
   const fetchGoldPrice = async () => {
     try {
-      const apiKey = process.env.REACT_APP_METAL_PRICE_API_KEY;
-      if (!apiKey) {
-        throw new Error('Missing METAL_PRICE_API_KEY');
-      }
-      const response = await fetch(`https://api.metalpriceapi.com/v1/latest?api_key=${apiKey}&base=USD&currencies=XAU`);
+      const response = await fetch("https://api.metalpriceapi.com/v1/latest?api_key=ef36848b688658c8f532b734ec403b6f&base=USD&currencies=XAU");
 
       if (!response.ok) {
         throw new Error('Failed to fetch gold price');
@@ -191,6 +193,7 @@ function App() {
   useEffect(() => {
     fetchGoldPrice();
   }, []);
+  */
 
   const sortProducts = (productsToSort: Product[]) => {
     if (!sort.sortBy) return productsToSort;
