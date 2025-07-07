@@ -26,9 +26,9 @@ const Card = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 200px;
-    min-width: 200px;
-    max-width: 200px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     scroll-snap-align: center;
   }
 

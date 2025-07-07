@@ -61,11 +61,11 @@ const CarouselContainer = styled.div`
   padding: 0 40px;
 
   @media (max-width: 768px) {
-    padding: 0 60px;
+    padding: 0; /* allow card to occupy full viewport */
   }
 
   @media (max-width: 480px) {
-    padding: 0 50px;
+    padding: 0; /* allow card to occupy full viewport */
   }
 `;
 
@@ -78,21 +78,17 @@ const ProductRow = styled.div`
   align-items: stretch;
   
   @media (max-width: 768px) {
-    gap: 16px;
-    padding: 16px 0;
+    gap: 0;              /* remove gaps so only one product shows */
+    padding: 0;          /* remove padding for full-width card */
     scroll-snap-type: x mandatory;
-    scroll-padding: 0 16px;
-    justify-content: flex-start;
   }
 
   @media (max-width: 480px) {
-    gap: 12px;
-    padding: 12px 0;
+    gap: 0;              /* remove gaps so only one product shows */
+    padding: 0;          /* remove padding for full-width card */
     scroll-snap-type: x mandatory;
-    scroll-padding: 0 12px;
-    justify-content: flex-start;
   }
-  
+
   /* Hide scrollbar by default */
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -314,35 +310,21 @@ function App() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (productRowRef.current) {
-      // Get responsive product width based on screen size
-      const getProductWidth = () => {
-        if (window.innerWidth <= 480) return 200;
-        if (window.innerWidth <= 768) return 240;
-        return 280;
-      };
-      
-      const getGapWidth = () => {
-        if (window.innerWidth <= 480) return 12;
-        if (window.innerWidth <= 768) return 16;
-        return 24;
-      };
-      
-      const productWidth = getProductWidth();
-      const gapWidth = getGapWidth();
       const containerWidth = productRowRef.current.clientWidth;
-      
-      // On mobile (≤768px), show only one product at a time
-      // On larger screens, show multiple products
-      let scrollAmount;
+
+      // Determine scroll amount
+      let scrollAmount: number;
       if (window.innerWidth <= 768) {
-        // Mobile: scroll by exactly one product width + gap
-        scrollAmount = productWidth + gapWidth;
+        // Mobile & tablet: scroll by the width of the visible area (one full product)
+        scrollAmount = containerWidth;
       } else {
-        // Desktop: calculate how many products are visible and scroll by that amount
+        // Desktop: use predefined card + gap calculation
+        const productWidth = 280;
+        const gapWidth = 24;
         const productsVisible = Math.max(1, Math.floor(containerWidth / (productWidth + gapWidth)));
         scrollAmount = (productWidth + gapWidth) * productsVisible;
       }
-      
+
       productRowRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
