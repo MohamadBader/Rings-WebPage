@@ -2,11 +2,14 @@
   "name": "my-webpage",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "ts-node src/server.ts",
     "start:frontend": "cd frontend && npm start",
-    "build": "tsc",
+    "build": "cd frontend && npm install && npm run build",
     "dev": "nodemon src/server.ts"
   },
   "keywords": [],
