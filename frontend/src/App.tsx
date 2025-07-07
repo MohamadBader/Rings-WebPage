@@ -80,11 +80,15 @@ const ProductRow = styled.div`
   @media (max-width: 768px) {
     gap: 16px;
     padding: 16px 0;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px;
   }
 
   @media (max-width: 480px) {
     gap: 12px;
     padding: 12px 0;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 12px;
   }
   
   /* Hide scrollbar by default */
@@ -325,11 +329,17 @@ function App() {
       const gapWidth = getGapWidth();
       const containerWidth = productRowRef.current.clientWidth;
       
-      // Calculate how many products are visible
-      const productsVisible = Math.max(1, Math.floor(containerWidth / (productWidth + gapWidth)));
-      
-      // Scroll by the number of visible products
-      const scrollAmount = (productWidth + gapWidth) * productsVisible;
+      // On mobile (≤768px), show only one product at a time
+      // On larger screens, show multiple products
+      let scrollAmount;
+      if (window.innerWidth <= 768) {
+        // Mobile: scroll by exactly one product width + gap
+        scrollAmount = productWidth + gapWidth;
+      } else {
+        // Desktop: calculate how many products are visible and scroll by that amount
+        const productsVisible = Math.max(1, Math.floor(containerWidth / (productWidth + gapWidth)));
+        scrollAmount = (productWidth + gapWidth) * productsVisible;
+      }
       
       productRowRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,

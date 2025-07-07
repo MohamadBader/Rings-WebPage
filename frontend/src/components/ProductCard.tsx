@@ -21,11 +21,13 @@ const Card = styled.div`
   @media (max-width: 768px) {
     width: 250px;
     min-width: 200px;
+    scroll-snap-align: center;
   }
 
   @media (max-width: 480px) {
     width: 220px;
     min-width: 180px;
+    scroll-snap-align: center;
   }
 
   &:hover {
