@@ -12,6 +12,14 @@ const AppContainer = styled.div`
   margin: 0 auto;
   padding: ${spacing.containerPadding};
   font-family: 'Avenir Book', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 20px 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 20px;
+  }
 `;
 
 const Title = styled.h1`
@@ -51,6 +59,14 @@ const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
   padding: 0 40px;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const ProductRow = styled.div`
@@ -60,6 +76,16 @@ const ProductRow = styled.div`
   gap: ${spacing.cardGap};
   padding: 20px 0;
   align-items: stretch;
+  
+  @media (max-width: 768px) {
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  @media (max-width: 480px) {
+    gap: 12px;
+    padding: 12px 0;
+  }
   
   /* Hide scrollbar by default */
   scrollbar-width: none;
@@ -282,8 +308,21 @@ function App() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (productRowRef.current) {
-      const productWidth = 280; // min-width of a product card
-      const gapWidth = 24; // from spacing.cardGap
+      // Get responsive product width based on screen size
+      const getProductWidth = () => {
+        if (window.innerWidth <= 480) return 220;
+        if (window.innerWidth <= 768) return 250;
+        return 280;
+      };
+      
+      const getGapWidth = () => {
+        if (window.innerWidth <= 480) return 12;
+        if (window.innerWidth <= 768) return 16;
+        return 24;
+      };
+      
+      const productWidth = getProductWidth();
+      const gapWidth = getGapWidth();
       const containerWidth = productRowRef.current.clientWidth;
       
       // Calculate how many products are visible

@@ -7,15 +7,26 @@ import StarRating from './StarRating';
 const Card = styled.div`
   border-radius: 8px;
   background: ${colors.background};
-  flex: 0 0 calc(25% - 18px);
-  min-width: 280px;
-  max-width: 320px;
+  flex: 0 0 auto;
+  width: 280px;
+  min-width: 250px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: ${spacing.contentGap};
   padding: 0;
   transition: transform 250ms ease-in-out, box-shadow 250ms ease-in-out;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 250px;
+    min-width: 200px;
+  }
+
+  @media (max-width: 480px) {
+    width: 220px;
+    min-width: 180px;
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -28,6 +39,14 @@ const ProductImage = styled.img`
   height: 280px;
   object-fit: cover;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    height: 250px;
+  }
+
+  @media (max-width: 480px) {
+    height: 220px;
+  }
 `;
 
 const ProductInfo = styled.div`
